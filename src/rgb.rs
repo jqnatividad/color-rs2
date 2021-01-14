@@ -59,12 +59,39 @@ impl<T: Debug, S: Default + Debug> Debug for Rgb<T,S>{
     }
 }
 
-#[derive(Serialize, Deserialize, Clone, Copy, PartialEq, Eq, Debug)]
+#[derive(Serialize, Deserialize)]
 pub struct Rg<T = u8, S = Srgb> { pub r: T, pub g: T, pub standard: PhantomData<S> }
 
 impl<T, S> Rg<T, S>{
     pub const fn new(r: T, g: T) -> Rg<T,S>{
         Rg{r, g, standard: PhantomData}
+    }
+}
+
+impl<T: Clone,S> Clone for Rg<T, S>{
+    fn clone(&self) -> Rg<T, S>{
+        Rg{ r: self.r.clone(), g: self.g.clone(), standard: PhantomData }
+    }
+}
+
+impl<T: Copy, S> Copy for Rg<T, S>{}
+
+impl<N: Clone + PartialEq + Num + NumCast, S> PartialEq for Rg<N, S>{
+	#[inline]
+	fn eq(&self, other: &Rg<N, S>) -> bool{
+		self.r.eq(&other.r) && self.g.eq(&other.g)
+	}
+}
+
+impl<N: Clone + PartialEq + Eq + Num + NumCast, S> Eq for Rg<N, S>{}
+
+impl<T: Debug, S: Default + Debug> Debug for Rg<T,S>{
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("Rg")
+            .field("r", &self.r)
+            .field("g", &self.g)
+            .field("standard", &S::default())
+            .finish()
     }
 }
 
