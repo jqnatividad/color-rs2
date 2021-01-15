@@ -4,7 +4,7 @@ version = "0.5.0"
 authors = ["Arturo Castro", "Brendan Zabarauskas <bjzaba@yahoo.com.au>", "Luqman Aden"]
 description = "A library that provides types and conversions for working with various color formats. Forked from the unmuntained crate color"
 license-file="LICENSE"
-repository="https://github.com/arturoc/colors-rs"
+repository="https://github.com/arturoc/color-rs"
 
 [lib]
 name="color"
