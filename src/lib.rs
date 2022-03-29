@@ -35,6 +35,7 @@ pub use xyz::{Xyz, ToXyz};
 // pub use color_space::{MatrixColorSpace, WhitePoint, TransferFunction, Srgb};
 pub use yxy::{Yxy, ToYxy};
 pub use lab::{Lab, ToLab};
+pub use oklab::{OkLab, ToOkLab, OkHsl, OkHsv};
 
 #[macro_use] mod rgb;
 #[macro_use] mod alpha;
@@ -46,6 +47,7 @@ mod luma;
 mod xyz;
 mod yxy;
 mod lab;
+mod oklab;
 pub mod color_space;
 #[cfg(feature="kmeans")]
 pub mod kmeans;

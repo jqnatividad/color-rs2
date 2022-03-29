@@ -17,7 +17,7 @@ use num_traits::{self, Zero, Saturating, NumCast, Num, Float};
 use std::{borrow::{Borrow, BorrowMut}, ops::{Mul, Div, Add, Sub, Index, IndexMut}};
 use std::marker::PhantomData;
 use std::mem;
-use color_space::{TransferFunction, Srgb, LinearRgb, MatrixColorSpace, D65, Vec3};
+use color_space::{TransferFunction, Srgb, LinearRgb, MatrixColorSpace, D65};
 use angle::*;
 
 use {Color, FloatColor};
@@ -27,6 +27,8 @@ use {Luma, ToLuma};
 use xyz::{Xyz, ToXyz};
 use alpha::{ToRgba, Rgba};
 use std::fmt::{self, Debug};
+
+use crate::oklab::{OkLab, ToOkLab};
 
 #[derive(Serialize, Deserialize)]
 pub struct Rgb<T = u8, S = Srgb> { pub r: T, pub g: T, pub b: T, standard: PhantomData<S> }
@@ -355,6 +357,25 @@ impl<T: Channel, S: MatrixColorSpace + TransferFunction> ToXyz for Rgb<T, S> {
         let rgb = self.to_rgb().to_linear();
         let xyz = S::to_xyz_matrix() * rgb.into();
         Xyz::new(xyz[0], xyz[1], xyz[2])
+    }
+}
+
+impl <T: Channel + Float + NumCast, S: MatrixColorSpace + TransferFunction> ToOkLab for Rgb<T, S> {
+    fn to_oklab<U: Channel>(&self) -> OkLab<U> {
+        let c: Rgb<T,_> = self.to_rgb().to_linear();
+        let l = cast::<f64, T>(0.4122214708) * c.r + cast::<f64, T>(0.5363325363) * c.g + cast::<f64, T>(0.0514459929) * c.b;
+        let m = cast::<f64, T>(0.2119034982) * c.r + cast::<f64, T>(0.6806995451) * c.g + cast::<f64, T>(0.1073969566) * c.b;
+        let s = cast::<f64, T>(0.0883024619) * c.r + cast::<f64, T>(0.2817188376) * c.g + cast::<f64, T>(0.6299787005) * c.b;
+
+        let l_ = l.cbrt();
+        let m_ = m.cbrt();
+        let s_ = s.cbrt();
+
+        OkLab {
+            l: (cast::<f64, T>(0.2104542553)*l_ + cast::<f64, T>(0.7936177850)*m_ - cast::<f64, T>(0.0040720468)*s_).to_channel(),
+            a: (cast::<f64, T>(1.9779984951)*l_ - cast::<f64, T>(2.4285922050)*m_ + cast::<f64, T>(0.4505937099)*s_).to_channel(),
+            b: (cast::<f64, T>(0.0259040371)*l_ + cast::<f64, T>(0.7827717662)*m_ - cast::<f64, T>(0.8086757660)*s_).to_channel(),
+        }
     }
 }
 
