@@ -11,7 +11,7 @@ name="color"
 
 [dependencies]
 num-traits = "0.2"
-angle = "0.4"
+angle = "0.5"
 half = "1.6.0"
 serde={version = "1"}
 serde_derive={version = "1"}
@@ -22,6 +22,6 @@ rand = { version = "0.7.3", optional = true }
 kmeans = ["kmeans_colors", "rand"]
 default = []
 
-#[patch.crates-io]
+# [patch.crates-io]
 # angle = {path = "../rinlibs/angle-rs"}
-#angle = {git = "ssh://github.com/arturoc/angle-rs", rev = "a69823c061ba227dc1e363c62c0cb38c7144c76c"}
+# angle = {git = "ssh://github.com/arturoc/angle-rs", rev = "a69823c061ba227dc1e363c62c0cb38c7144c76c"}
