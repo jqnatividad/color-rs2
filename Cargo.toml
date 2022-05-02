@@ -15,8 +15,8 @@ angle = "0.5"
 half = "1.6.0"
 serde={version = "1"}
 serde_derive={version = "1"}
-kmeans_colors = { version = "0.3.4", default-features=false, optional = true }
-rand = { version = "0.7.3", optional = true }
+kmeans_colors = { version = "0.5", default-features=false, optional = true }
+rand = { version = "0.8", optional = true }
 
 [features]
 kmeans = ["kmeans_colors", "rand"]
