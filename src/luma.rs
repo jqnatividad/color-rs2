@@ -17,7 +17,6 @@ use num_traits::{Saturating, NumCast, Num};
 use std::ops::{Mul, Div, Add, Sub};
 use std::marker::PhantomData;
 
-use AlphaColor;
 use {Color, FloatColor};
 use {Channel, FloatChannel};
 use {Hsv, ToHsv};

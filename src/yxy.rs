@@ -2,7 +2,7 @@ use channel::Channel;
 use num_traits::{Float, one, zero};
 use color_space::{WhitePoint, D65};
 use xyz::{ToXyz, Xyz};
-use std::ops::{Add, AddAssign, Sub, Mul, Div};
+use std::ops::Add;
 
 pub struct Yxy<T = f32, Wp = D65> {
     pub x: T,
