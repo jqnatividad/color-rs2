@@ -28,7 +28,7 @@ use xyz::{Xyz, ToXyz};
 use alpha::{ToRgba, Rgba};
 use std::fmt::{self, Debug};
 
-use crate::oklab::{OkLab, ToOkLab};
+use crate::{oklab::{OkLab, ToOkLab}, ToHsl, Hsl};
 
 #[derive(Serialize, Deserialize)]
 pub struct Rgb<T = u8, S = Srgb> { pub r: T, pub g: T, pub b: T, standard: PhantomData<S> }
@@ -347,6 +347,31 @@ impl<T:Channel, S: TransferFunction> ToHsv for Rgb<T, S> {
 
         } else {
             Hsv::new(Zero::zero(), Zero::zero(),mx)
+        }
+    }
+}
+
+impl<T:Channel, S: TransferFunction> ToHsl for Rgb<T, S> {
+    type Standard = S;
+    #[inline]
+    fn to_hsl<U:Channel + NumCast + Num>(&self) -> Hsl<U, S> {
+        let rgb_f64 = self.to_rgb::<f64>();
+
+        let mx = rgb_f64.r.channel_max(rgb_f64.g).channel_max(rgb_f64.b);
+        let mn = rgb_f64.r.channel_min(rgb_f64.g).channel_min(rgb_f64.b);
+        let d = mx - mn;
+        let l = (mx + mn) * 0.5;
+        if d != Zero::zero() {
+            let s = if l < 0.5 { d / (mx + mn) } else { d / (2. - mx - mn ) } ;
+            let h =
+                if      rgb_f64.r == mx       { (rgb_f64.g - rgb_f64.b) / d }
+                else if rgb_f64.g == mx       { ((rgb_f64.b - rgb_f64.r) / d) + 2. }
+                else    /* rgb_u.b == mx */ { ((rgb_f64.r - rgb_f64.g) / d) + 4. }
+            * 60.;
+
+            Hsl::new(angle::cast(Deg(h)).unwrap(), Channel::from(s), Channel::from(l))
+        } else {
+            Hsl::new(Zero::zero(), Zero::zero(), Channel::from(l))
         }
     }
 }
