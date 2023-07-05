@@ -144,14 +144,14 @@ impl<T:Clone + Channel + NumCast + Num, S: TransferFunction> ToRgb for Hsv<T, S>
             let gray = Channel::from(self.v);
             Rgb::new(gray, gray, gray)
         } else {
-            let max_f: f64 = cast(T::max());
+            let max_f: f64 = cast(T::CHANNEL_MAX);
             let hue: f64 = cast(self.h.wrap().value());
             let hue_six: f64 = hue / 360f64 * 6f64;
             let hue_six_cat: usize = cast(hue_six);
             let hue_six_rem: T = cast(hue_six.fract() * max_f);
-            let pv = Channel::from((T::max() - self.s).normalized_mul(self.v));
-            let qv = Channel::from((T::max() - self.s.normalized_mul(hue_six_rem)).normalized_mul(self.v));
-            let tv = Channel::from((T::max() - self.s.normalized_mul(T::max() - hue_six_rem)).normalized_mul(self.v));
+            let pv = Channel::from((T::CHANNEL_MAX - self.s).normalized_mul(self.v));
+            let qv = Channel::from((T::CHANNEL_MAX - self.s.normalized_mul(hue_six_rem)).normalized_mul(self.v));
+            let tv = Channel::from((T::CHANNEL_MAX - self.s.normalized_mul(T::CHANNEL_MAX - hue_six_rem)).normalized_mul(self.v));
             let b: U = Channel::from(self.v);
             match hue_six_cat {
                 0 | 6 => Rgb::new(b,tv,pv),
