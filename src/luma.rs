@@ -199,3 +199,11 @@ impl<T:Channel + Saturating, S> Saturating for Luma<T, S> {
         Luma::new(self.l.saturating_sub(v.l))
     }
 }
+
+#[cfg(feature = "bytemuck")]
+unsafe impl<T, S> bytemuck::Pod for Luma<T, S>
+where T: Copy + 'static, S: TransferFunction {}
+
+#[cfg(feature = "bytemuck")]
+unsafe impl<T, S> bytemuck::Zeroable for Luma<T, S>
+where S: TransferFunction {}

@@ -98,3 +98,11 @@ impl<T: Channel + Float + NumCast, Wp: WhitePoint> Mul<T> for Lab<T,Wp>{
         Lab::new(self.l * other, self.a * other, self.b * other)
     }
 }
+
+#[cfg(feature = "bytemuck")]
+unsafe impl<T, Wp> bytemuck::Pod for Lab<T, Wp>
+where T: Copy + 'static, Wp: WhitePoint + Copy + 'static {}
+
+#[cfg(feature = "bytemuck")]
+unsafe impl<T, Wp> bytemuck::Zeroable for Lab<T, Wp>
+where Wp: WhitePoint {}

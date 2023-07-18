@@ -21,6 +21,8 @@ extern crate half;
 extern crate kmeans_colors;
 #[cfg(feature="kmeans")]
 extern crate rand;
+#[cfg(feature = "bytemuck")]
+extern crate bytemuck;
 
 pub use alpha::AlphaColor;
 pub use alpha::{Rgba, Hsva, YCbCra, ToRgba, LumaA};
@@ -28,12 +30,10 @@ pub use channel::{Channel, FloatChannel};
 pub use hsv::{Hsv, ToHsv};
 pub use hsl::{Hsl, ToHsl};
 pub use rgb::{Rgb, Rg, ToRgb, consts};
-// pub use srgb::{Srgb, ToSrgb};
 pub use ycbcr::YCbCr;
 pub use angle::Deg;
 pub use luma::{Luma, ToLuma};
 pub use xyz::{Xyz, ToXyz};
-// pub use color_space::{MatrixColorSpace, WhitePoint, TransferFunction, Srgb};
 pub use yxy::{Yxy, ToYxy};
 pub use lab::{Lab, ToLab};
 pub use oklab::{OkLab, ToOkLab, OkHsl, OkHsv};

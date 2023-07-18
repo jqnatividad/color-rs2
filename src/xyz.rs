@@ -98,3 +98,11 @@ impl<T: Channel + Float, Wp: WhitePoint> ToYxy for Xyz<T, Wp> {
         Yxy{x: x.to_channel(), y: y.to_channel(), luma: luma.to_channel(), white_point: Wp::default()}
     }
 }
+
+#[cfg(feature = "bytemuck")]
+unsafe impl<T, Wp> bytemuck::Pod for Xyz<T, Wp>
+where T: Copy + Channel + Float + 'static, Wp: WhitePoint + Copy + 'static {}
+
+#[cfg(feature = "bytemuck")]
+unsafe impl<T, Wp> bytemuck::Zeroable for Xyz<T, Wp>
+where T: Copy + Channel + Float, Wp: WhitePoint {}

@@ -166,6 +166,14 @@ impl<T:Clone + Channel + NumCast + Num, S: TransferFunction> ToRgb for Hsv<T, S>
     }
 }
 
+#[cfg(feature = "bytemuck")]
+unsafe impl<T, S> bytemuck::Pod for Hsv<T, S>
+where T: Copy + 'static, S: TransferFunction {}
+
+#[cfg(feature = "bytemuck")]
+unsafe impl<T, S> bytemuck::Zeroable for Hsv<T, S>
+where S: TransferFunction {}
+
 #[cfg(test)]
 mod tests {
     use {Hsv, ToHsv};

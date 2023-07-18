@@ -4,6 +4,7 @@ use color_space::{WhitePoint, D65};
 use xyz::{ToXyz, Xyz};
 use std::ops::Add;
 
+#[derive(Clone, Copy, Debug)]
 pub struct Yxy<T = f32, Wp = D65> {
     pub x: T,
     pub y: T,
@@ -73,3 +74,11 @@ where
 //         self.luma += other.luma;
 //     }
 // }
+
+#[cfg(feature = "bytemuck")]
+unsafe impl<T, Wp> bytemuck::Pod for Yxy<T, Wp>
+where T: Copy + 'static, Wp: WhitePoint + Copy + 'static {}
+
+#[cfg(feature = "bytemuck")]
+unsafe impl<T, Wp> bytemuck::Zeroable for Yxy<T, Wp>
+where Wp: WhitePoint {}

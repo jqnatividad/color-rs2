@@ -30,7 +30,9 @@ use std::fmt::{self, Debug};
 
 use crate::{oklab::{OkLab, ToOkLab}, ToHsl, Hsl};
 
+
 #[derive(Serialize, Deserialize)]
+#[repr(C)]
 pub struct Rgb<T = u8, S = Srgb> { pub r: T, pub g: T, pub b: T, standard: PhantomData<S> }
 
 impl<T: Clone,S> Clone for Rgb<T, S>{
@@ -667,6 +669,14 @@ pub mod consts {
     pub static YELLOW:                  Rgb<u8, Srgb> = Rgb::new(0xFF, 0xFF, 0x00);
     pub static YELLOWGREEN:             Rgb<u8, Srgb> = Rgb::new(0x9A, 0xCD, 0x32);
 }
+
+#[cfg(feature = "bytemuck")]
+unsafe impl<T, S> bytemuck::Pod for Rgb<T, S>
+where T: Copy + 'static, S: TransferFunction {}
+
+#[cfg(feature = "bytemuck")]
+unsafe impl<T, S> bytemuck::Zeroable for Rgb<T, S>
+where S: TransferFunction {}
 
 #[cfg(test)]
 mod tests {

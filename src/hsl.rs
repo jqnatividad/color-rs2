@@ -157,6 +157,14 @@ impl<T:Clone + Channel + NumCast + Num, S: TransferFunction> ToRgb for Hsl<T, S>
     }
 }
 
+#[cfg(feature = "bytemuck")]
+unsafe impl<T, S> bytemuck::Pod for Hsl<T, S>
+where T: Copy + 'static, S: TransferFunction {}
+
+#[cfg(feature = "bytemuck")]
+unsafe impl<T, S> bytemuck::Zeroable for Hsl<T, S>
+where S: TransferFunction {}
+
 #[cfg(test)]
 mod tests {
     use {Hsl, ToHsl};

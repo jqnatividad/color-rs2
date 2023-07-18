@@ -559,3 +559,11 @@ impl<T, C: BorrowMut<[T;3]>> BorrowMut<[T;4]> for AlphaColor<T,C> {
         unsafe{ mem::transmute(self)}
     }
 }
+
+#[cfg(feature = "bytemuck")]
+unsafe impl<T, C> bytemuck::Pod for AlphaColor<T, C>
+where T: Copy + 'static, C: bytemuck::Pod {}
+
+#[cfg(feature = "bytemuck")]
+unsafe impl<T, C> bytemuck::Zeroable for AlphaColor<T, C>
+where C: bytemuck::Zeroable {}

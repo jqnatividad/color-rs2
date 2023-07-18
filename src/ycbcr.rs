@@ -24,3 +24,10 @@ impl<T> YCbCr<T> {
         YCbCr { y: y, cb: cb, cr: cr }
     }
 }
+
+#[cfg(feature = "bytemuck")]
+unsafe impl<T> bytemuck::Pod for YCbCr<T>
+where T: Copy + 'static {}
+
+#[cfg(feature = "bytemuck")]
+unsafe impl<T> bytemuck::Zeroable for YCbCr<T> {}
