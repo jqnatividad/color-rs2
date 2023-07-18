@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use num_traits::{self, NumCast, Num, Float};
+use num_traits::{self, NumCast, Num};
 use angle::*;
 
 use {Color, FloatColor};

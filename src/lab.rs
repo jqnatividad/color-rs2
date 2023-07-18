@@ -1,5 +1,5 @@
 use channel::Channel;
-use color_space::{WhitePoint};
+use color_space::WhitePoint;
 use num_traits::{Float, NumCast, cast, zero};
 use xyz::{Xyz, ToXyz};
 use std::ops::{Add, Mul};
